@@ -1,0 +1,6 @@
+roslaunch mavros px4.launch fcu_url:="/dev/ttyTHS2:921600" gcs_url:="udp://:14401@127.0.0.1:14550"
+
+rosrun robot_fly test.py
+
+rosrun face_rec test.py
+
