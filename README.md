@@ -3,7 +3,7 @@ Diego Herrera, and Hiroki Imamura
 
 Faculty of Science and Engineering, Department of Information System, SOKA University of Japan, Japan
 
-##Abstract.
+## Abstract
 In the new technological era, facial recognition has become a central issue for a great
 number of engineers. Currently, there are a great number of techniques for facial recognition, but
 in this research, we focus on the use of deep learning. The problems with current facial
@@ -16,3 +16,7 @@ framework is used for the training of a convolutional neural network. The system
 the NVIDIA Jetson TX2 motherboard. The design and construction of the quadcopter are done
 from scratch because we need the UAV for adapt to our requirements. This research aims to
 reduce violence and crime in Latin America.
+
+## Description:
+
+
