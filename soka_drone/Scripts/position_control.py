@@ -15,6 +15,7 @@ from mavros_msgs.msg import State
 from mavros_msgs.srv import CommandBool
 from mavros_msgs.srv import SetMode
 from mavros_msgs.srv import CommandTOL
+from mavros_msgs.srv import CommandHome
 
 pi_2 = 3.141592654 / 2.0
 
@@ -34,6 +35,7 @@ class mavros_control():
         # STABILIZE
         # OFFBOARD
         # AUTO.LAND
+        self.set_home_position = rospy.ServiceProxy("/mavros/cmd/set_home", CommandHome)
         self.set_mode_service = rospy.ServiceProxy("/mavros/set_mode", SetMode)
         self.arming_service = rospy.ServiceProxy("/mavros/cmd/arming", CommandBool)
         self.takingoff_service = rospy.ServiceProxy("/mavros/cmd/takeoff", CommandTOL)
@@ -80,6 +82,7 @@ class mavros_control():
         :return current_mode: the current mode of the quadrotor
         """
         current_mode = self.set_mode_service(base_mode=0, custom_mode="OFFBOARD")
+        rospy.loginfo("Current mode: %s" % self.state.mode)
         self.arm()
 
         # Takingoff the drone
@@ -89,6 +92,7 @@ class mavros_control():
 
     def land(self):
         resp = self.set_mode_service(base_mode=0, custom_mode="AUTO.LAND")
+        rospy.sleep(5)
         self.disarm()
 
     def goto_axes_angles(self, x, y, z, ro, pi, ya):
@@ -123,21 +127,22 @@ def position_control():
     control = mavros_control()
     rospy.sleep(2)
     print("arming and taking off")
-    control.takeoff(0.5)
+    control.takeoff()
     rospy.sleep(30)
-    # control.goto_axes_angles(0, 0, 1.2, 0, 0, 0)
-    # rospy.sleep(3)
-    #
-    # print("Waypoint 1 (X = 0, Y = 0.4, Z = 1.2)")
-    # control.goto_axes_angles(0.0, 0.0, 1.2, 0, 0, -1 * pi_2)
-    # rospy.sleep(2)
-    # control.goto_axes_angles(0.0, 0.4, 1.2, 0, 0, -1 * pi_2)
-    # rospy.sleep(5)
-    # control.goto_axes_angles(0.0, 0.0, 1.2, 0, 0, 0)
-    # rospy.sleep(4)
+    control.goto_axes_angles(0, 0, 2.0, 0, 0, 0)
+    rospy.sleep(3)
+
+    print("Waypoint 1 (X = 0, Y = 0.4, Z = 1.2)")
+    control.goto_axes_angles(0.0, 0.0, 2.5, 0, 0, -1 * pi_2)
+    rospy.sleep(2)
+    control.goto_axes_angles(0.0, 0.4, 2.0, 0, 0, -1 * pi_2)
+    rospy.sleep(5)
+    control.goto_axes_angles(0.0, 0.0, 1.5, 0, 0, 0)
+    rospy.sleep(4)
 
     print("Landing")
     control.land()
+
 
 
 if __name__ == '__main__':

@@ -12,10 +12,8 @@ from mavros_msgs.msg import State
 from mavros_msgs.srv import CommandBool, SetMode
 from geometry_msgs.msg import Point
 
-
 # Callback method for state subscriber
 current_state = State()  # Reading the current state from mavros msgs
-offb_set_mode = SetMode  # Reading the setmode and saving at off_set_mode
 
 
 def state_callback(state):
@@ -29,19 +27,12 @@ local_position_publisher = rospy.Publisher(mavros.get_topic('setpoint_position',
 state_subscriber = rospy.Subscriber(mavros.get_topic('state'), State, state_callback)
 
 arming_client = rospy.ServiceProxy(mavros.get_topic('cmd', 'arming'), CommandBool)
-takingoff_client = rospy.ServiceProxy(mavros.get_topic('cmd', 'takeoff'), CommandBool)
-landing_client = rospy.ServiceProxy(mavros.get_topic('cmd', 'land'), CommandBool)
 set_mode_client = rospy.ServiceProxy(mavros.get_topic('set_mode'), SetMode)
 
 pose = PoseStamped()
-'''
-pose.pose.position.x = 0
-pose.pose.position.y = 0
-pose.pose.position.z = 2
-'''
 
 
-def puto(data):
+def coordinates_xyz(data):
     print("Callback function")
 
     X = data.x
@@ -57,10 +48,6 @@ def puto(data):
     pose.pose.position.z = Z
     # pose.header.stamp = rospy.Time.now()
     # local_position_publisher.publish(pose)
-    '''
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
-    print("ruso huevo loco")
-    '''
 
 
 def position_control():
@@ -81,7 +68,6 @@ def position_control():
     last_request = rospy.get_rostime()
 
     while not rospy.is_shutdown():
-        print("While not rospy.is_shutdown")
         now = rospy.get_rostime()
         if current_state.mode != "OFFBOARD" and (now - last_request > rospy.Duration(5.)):
             set_mode_client(base_mode=0, custom_mode="OFFBOARD")
@@ -93,19 +79,15 @@ def position_control():
                 last_request = now
 
         if current_state.armed:
-            print("El drone esta listo pa volar homie")
+            print("Drone ready to fly")
         if prev_state.armed != current_state.armed:
             rospy.loginfo("Vehicle armed: %r" % current_state.armed)
         if prev_state.mode != current_state.mode:
             rospy.loginfo("Current mode: %s" % current_state.mode)
 
         prev_state = current_state
-        print("Going to callback function")
-
-        rospy.Subscriber("SOKA_DRONE", Point, puto)
-        print("after callback function")
+        rospy.Subscriber("SOKA_DRONE", Point, coordinates_xyz)
         pose.header.stamp = rospy.Time.now()
-        print("Local_position_publisher____ publishing coordinates")
         local_position_publisher.publish(pose)
         rate.sleep()
 
