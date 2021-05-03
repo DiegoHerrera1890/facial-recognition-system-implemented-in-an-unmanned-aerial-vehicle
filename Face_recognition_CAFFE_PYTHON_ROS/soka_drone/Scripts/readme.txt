@@ -1,7 +1,9 @@
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* Gazebo Simulator *-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*
-diego@subarashi:~/src/Firmware$ sudo nosim=1 make px4_sitl_default gazebo   // optional: px4_sitl gazebo_iris_opt_flow
-diego@subarashi:~$ roslaunch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14557"
-diego@subarashi:~$ rosrun soka_drone diego_test.py
+diego@diego-desktop:~/src/PX4-Autopilot$ sudo nosim=1 make px4_sitl_default gazebo   // optional: px4_sitl gazebo_iris_opt_flow
+diego@diego-desktop:~$ roslaunch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14557"
+diego@diego-desktop:~$ rosrun soka_drone Main_node_2.py          *First
+diego@diego-desktop:~$ rosrun soka_drone Quadcopter_1.py         *Second
+diego@diego-desktop:~$ rosrun soka_drone Coordinates_reader.py   *Third
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*
 
 

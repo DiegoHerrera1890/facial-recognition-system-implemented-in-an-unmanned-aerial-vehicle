@@ -147,7 +147,7 @@ def position_control():
 
     while not rospy.is_shutdown():
         now = rospy.get_rostime()
-        control.takeoff()
+        #control.takeoff()
         #print("before while")
 
         if control.current_state.armed:
