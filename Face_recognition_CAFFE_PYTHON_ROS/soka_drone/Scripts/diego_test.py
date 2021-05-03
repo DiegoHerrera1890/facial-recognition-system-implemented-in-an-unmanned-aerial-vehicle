@@ -7,110 +7,161 @@ email: alberto18_90@outlook.com
 '''
 
 import rospy
+import tf
 import mavros
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import Pose, PoseStamped, Twist, Quaternion
+from mavros_msgs.msg import OverrideRCIn
+from mavros_msgs.msg import RCIn
 from mavros_msgs.msg import State
-from mavros_msgs.srv import CommandBool, SetMode
+from mavros_msgs.srv import CommandBool
+from mavros_msgs.srv import SetMode
+from mavros_msgs.srv import CommandTOL
 from geometry_msgs.msg import Point
 
 
-# Callback method for state subscriber
-current_state = State()  # Reading the current state from mavros msgs
-offb_set_mode = SetMode  # Reading the setmode and saving at off_set_mode
+class mavros_main_control():
+    def __init__(self):
+        print("Mavros Control")
+        mavros.set_namespace()
+        rospy.init_node('Offboard_node', anonymous=True)
+        print("node already created")
+        # Subscribers
+        rospy.Subscriber("/mavros/state", State, self.state_callback)
+        rospy.Subscriber("/mavros/local_position/pose", PoseStamped, self.pose_callback)
+        rospy.Subscriber("/mavros/rc/in", RCIn, self.rc_callback)
+        rospy.Subscriber("SOKA_DRONE", Point, self.coordinates)
+        # Publisher
+        self.local_position_publisher = rospy.Publisher(mavros.get_topic('setpoint_position', 'local'), PoseStamped,queue_size=10)
+        self.velocity_pub = rospy.Publisher("/mavros/setpoint_velocity/cmd_vel_unstamped", Twist, queue_size=10)
+        self.rc_override = rospy.Publisher("/mavros/rc/override", OverrideRCIn, queue_size=10)
 
+        # Mavros services for arming, takeoff, and set mode
+        self.arming_service = rospy.ServiceProxy(mavros.get_topic('cmd', 'arming'), CommandBool)
+        self.takeoff_service = rospy.ServiceProxy(mavros.get_topic('cmd', 'takeoff'), CommandTOL)
+        self.set_mode_service = rospy.ServiceProxy("/mavros/set_mode", SetMode)
 
-def state_callback(state):
-    global current_state
-    current_state = state
+        # Flight modes for PX4
+        # STABILIZE
+        # OFFBOARD
+        # AUTO.LAND
 
+        # Callback method for state subscriber
+        self.current_state = State()  # Reading the current state from mavros msgs
+        self.timestamp = rospy.Time()
+        self.pose = Pose()
+        self.rc = RCIn()
+	self.state = State()
+        print("end of the class")
+        # while not self.current_state.connected:
+        #     print("waiting FCU connection")
+        #     rate.sleep()
 
-mavros.set_namespace()
-local_position_publisher = rospy.Publisher(mavros.get_topic('setpoint_position', 'local'), PoseStamped,
-                                           queue_size=10)  #
-state_subscriber = rospy.Subscriber(mavros.get_topic('state'), State, state_callback)
+    def rc_callback(self, data):
+        print("rc_callback")
+        self.rc = data
 
-arming_client = rospy.ServiceProxy(mavros.get_topic('cmd', 'arming'), CommandBool)
-takingoff_client = rospy.ServiceProxy(mavros.get_topic('cmd', 'takeoff'), CommandBool)
-landing_client = rospy.ServiceProxy(mavros.get_topic('cmd', 'land'), CommandBool)
-set_mode_client = rospy.ServiceProxy(mavros.get_topic('set_mode'), SetMode)
+    def pose_callback(self, data):
+        # print("pose_callback")
+        self.timestamp = data.header.stamp
+        self.pose = data.pose
 
-pose = PoseStamped()
-'''
-pose.pose.position.x = 0
-pose.pose.position.y = 0
-pose.pose.position.z = 2
-'''
+    def state_callback(self, data):
+        # print("state_callback")
+        self.current_state = data
 
+    def arm(self):
+        """
+        return: vehicle is armed and ready to fly
+        """
+        return self.arming_service(True)
 
-def puto(data):
-    print("Callback function")
+    def disarm(self):
+        """
+        return: vehicle is disarmed
+        """
+        return self.arming_service(False)
 
-    X = data.x
-    Y = data.y
-    Z = data.z
-    print("X value: ", X)
-    print("Y value: ", Y)
-    print("Z value: ", Z)
-    print("")
-    # pose = PoseStamped()
-    pose.pose.position.x = X
-    pose.pose.position.y = Y
-    pose.pose.position.z = Z
-    # pose.header.stamp = rospy.Time.now()
-    # local_position_publisher.publish(pose)
-    '''
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
-    print("ruso huevo loco")
-    '''
+    def control_mode(self):
+        self.set_mode_service(base_mode=0, custom_mode="OFFBOARD")
+        # print("Offboard Mode")
+        # print("Current mode: %s" % self.current_state.mode)
+        # return current_mode
+
+    def takeoff(self):  # height=2.0
+        """
+        :param height: Desire altitude to achieve
+        :return current_mode: the current mode of the quadrotor
+        """
+        current_mode = self.set_mode_service(base_mode=0, custom_mode="OFFBOARD")
+	rospy.loginfo("Current mode: %s" % self.state.mode)
+        self.arm()
+
+        # Takingoff the drone
+        # min_pitch= 0.0, yaw= 0.0, latitude= 47.397742, longitude= 8.5455936, altitude= 489.6
+        self.takeoff_service()  # (altitude=489.height)
+
+        # return current_mode
+
+    def land(self):
+        resp = self.set_mode_service(base_mode=0, custom_mode="AUTO.LAND")
+        self.disarm()
+
+    def coordinates(self, data):
+        print("Callback function")
+
+        X = data.x
+        Y = data.y
+        Z = data.z
+        print("X value: ", X)
+        print("Y value: ", Y)
+        print("Z value: ", Z)
+        print("")
+        pose = Pose()
+        pose.position.x = X
+        pose.position.y = Y
+        pose.position.z = Z
+        self.goto(pose)
+
+    def goto(self, pose):
+        """
+        :param pose: Set the target as the next setpoint by sending Local_Position_NED
+        """
+        pose_stamped = PoseStamped()
+        pose_stamped.header.stamp = self.timestamp
+        pose_stamped.pose = pose
+
+        self.local_position_publisher.publish(pose_stamped)
 
 
 def position_control():
-    print("Position control def")
-    rospy.init_node('Offboard_node', anonymous=True)
-    prev_state = current_state
-    rate = rospy.Rate(20.0)
-
-    # Sending a few points before start
-    for i in range(100):
-        local_position_publisher.publish(pose)
+    print("Position control")
+    control = mavros_main_control()
+    rate = rospy.Rate(10)  # 10hz
+    while not control.current_state.connected:
+        print("waiting FCU connection")
         rate.sleep()
-
-    # We need to wait for FCU connection
-    while not current_state.connected:
-        rate.sleep()
-
+    control.control_mode()
     last_request = rospy.get_rostime()
+    control.takeoff()
+    print("before while")
 
     while not rospy.is_shutdown():
-        print("While not rospy.is_shutdown")
         now = rospy.get_rostime()
-        if current_state.mode != "OFFBOARD" and (now - last_request > rospy.Duration(5.)):
-            set_mode_client(base_mode=0, custom_mode="OFFBOARD")
-            last_request = now
-            print("OFFBOARD MODE")
-            print("OFFBOARD MODE")
-            print("OFFBOARD MODE")
+        control.takeoff()
+        #print("before while")
 
-        else:
-            if not current_state.armed and (now - last_request > rospy.Duration(5.)):
-                arming_client(True)
-                last_request = now
-
-        if current_state.armed:
+        if control.current_state.armed:
             print("El drone esta listo pa volar homie")
-        if prev_state.armed != current_state.armed:
-            rospy.loginfo("Vehicle armed: %r" % current_state.armed)
-        if prev_state.mode != current_state.mode:
-            rospy.loginfo("Current mode: %s" % current_state.mode)
+        # if prev_state.armed != current_state.armed:
+        #     rospy.loginfo("Vehicle armed: %r" % current_state.armed)
+        # if prev_state.mode != current_state.mode:
+        #     rospy.loginfo("Current mode: %s" % current_state.mode)
 
-        prev_state = current_state
-        print("Going to callback function")
-
-        rospy.Subscriber("SOKA_DRONE", Point, puto)
-        print("after callback function")
-        pose.header.stamp = rospy.Time.now()
-        print("Local_position_publisher____ publishing coordinates")
-        local_position_publisher.publish(pose)
+        # rospy.Subscriber("SOKA_DRONE", Point, control.coordinates())
+        # print("after callback function")
+        # pose.header.stamp = rospy.Time.now()
+        # print("Local_position_publisher____ publishing coordinates")
+        # local_position_publisher.publish(pose)
         rate.sleep()
 
 

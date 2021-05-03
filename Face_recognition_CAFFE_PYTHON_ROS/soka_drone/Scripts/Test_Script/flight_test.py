@@ -33,6 +33,7 @@ except rospy.ServiceException as e:
 print("\nTaking off")
 rospy.wait_for_service('/mavros/cmd/takeoff')
 try:
+    # rospy.ServiceProxy("/mavros/set_mode", SetMode)
     # rosservice call /mavros/cmd/land min_pitch= 0.0, yaw= 0.0, latitude= 0.0, longitude= 0.0, altitude= 0.0
     takeoff_cl = rospy.ServiceProxy('/mavros/cmd/takeoff', CommandTOL)
     response = takeoff_cl(min_pitch= 0.0, yaw= 0.0, latitude= 47.397742, longitude= 8.5455936, altitude= 489.6)
@@ -40,4 +41,26 @@ try:
 except rospy.ServiceException, e:
     rospy.loginfo("Service call failed")
 
+print("\nHovering...")
+time.sleep(5)
+# Land
+# print("\nLanding")
+# rospy.wait_for_service('/mavros/cmd/land')
+# try:
+#     takeoff_cl = rospy.ServiceProxy('/mavros/cmd/land', CommandTOL)
+#     response = takeoff_cl(altitude=10, latitude= 47.397742, longitude= 8.5455936, min_pitch=0, yaw=0)
+#     rospy.loginfo(response)
+# except rospy.ServiceException as e:
+#     print("Landing failed: %s" %e)
+
+# Disarm
+# print("\nDisarming")
+# rospy.wait_for_service('/mavros/cmd/arming')
+# try:
+#     arming_cl = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
+#     response = arming_cl(value = False)
+#     rospy.loginfo(response)
+# except rospy.ServiceException as e:
+#     print("Disarming failed: %s" %e)
+# time.sleep(10)
 
