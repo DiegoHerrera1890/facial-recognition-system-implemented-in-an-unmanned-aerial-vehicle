@@ -20,3 +20,9 @@ diego@subarashi:~$ rosrun soka_drone 3_searching_node.py            *Four
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-
 
 
+diego@diego-ubuntu:~/PX4-Autopilot$ roslaunch gazebo_ros empty_world.launch world_name:=$(pwd)/Tools/sitl_gazebo/worlds/iris.world
+diego@diego-ubuntu:~/PX4-Autopilot$ no_sim=1 make px4_sitl_default gazebo
+diego@diego-ubuntu:~$ roslaunch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14557"
+diego@diego-ubuntu:~$ rostopic echo /gazebo/model_states
+diego@diego-ubuntu:~$ rostopic info /gazebo/model_states 
+
