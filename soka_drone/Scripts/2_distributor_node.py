@@ -55,3 +55,14 @@ if __name__ == "__main__":
     #Tracking_class = Tracking()
     Drone_class = Drone_1()
     rospy.spin()
+
+
+
+
+
+
+
+
+
+
+

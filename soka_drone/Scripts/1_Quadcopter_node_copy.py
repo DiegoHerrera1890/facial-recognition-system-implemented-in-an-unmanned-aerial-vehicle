@@ -30,7 +30,6 @@ local_position_publisher = rospy.Publisher(mavros.get_topic('setpoint_position',
 state_subscriber = rospy.Subscriber(mavros.get_topic('state'), State, state_callback)
 
 arming_client = rospy.ServiceProxy(mavros.get_topic('cmd', 'arming'), CommandBool)
-takeoff_client = rospy.ServiceProxy(mavros.get_topic('cmd', 'takeoff'), CommandTOL)
 landing_client = rospy.ServiceProxy(mavros.get_topic('cmd', 'land'), CommandTOL)
 set_mode_client = rospy.ServiceProxy(mavros.get_topic('set_mode'), SetMode)
 
@@ -67,13 +66,11 @@ def position_control():
         rate.sleep()
 
     # We need to wait for FCU connection
-
     while not current_state.connected:
         rate.sleep()
 
     last_request = rospy.get_rostime()
-
-
+    
     while not rospy.is_shutdown():
         now = rospy.get_rostime()
         #qxVal, yVal, zVal, rVal, pVal, yawVal = 0 , 0, 1.6, 0, 0, 0
