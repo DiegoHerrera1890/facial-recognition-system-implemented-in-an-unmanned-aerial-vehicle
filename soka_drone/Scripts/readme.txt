@@ -87,3 +87,31 @@ yaw: 0.0
 yaw_rate: 1.0"
 
 
+
+
+rostopic pub -r 100 /mavros/setpoint_raw/local mavros_msgs/PositionTarget "header:
+  seq: 0
+  stamp: {secs: 0, nsecs: 0}
+  frame_id: ''
+coordinate_frame: 8
+type_mask: 1475
+yaw: 0.0
+yaw_rate: 1.0"
+
+
+
+
+
+rostopic pub -r 10 /mavros/setpoint_attitude/cmd_vel geometry_msgs/TwistStamped "header:
+  seq: 0
+  stamp: {secs: 0, nsecs: 0}
+  frame_id: ''
+twist:
+  linear: {x: 0.0, y: 0.0, z: 1.6}
+  angular: {x: 0.0, y: 0.0, z: 0.5}"
+
+
+
+
+
+rostopic pub /Face_recognition/Searching std_msgs/String "Searching"
