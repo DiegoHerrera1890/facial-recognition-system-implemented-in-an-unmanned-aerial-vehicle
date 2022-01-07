@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 '''
-Main node for RPi slave
-Subscribe to master RPi and publish to Arduino due.
+Searching node. This node subscribe data from face_recognition node to know
+if there is a face or not in front of the camera. If there is no a face then the drone must rotate
+over its z axis. This node publish the coordinates to rotate the drone to the distributor node.
+date: August 2021
 @DiegoHerrera
 '''
 
@@ -17,6 +19,7 @@ from geometry_msgs.msg import Point
 from geometry_msgs.msg import TwistStamped
 from mavros_msgs.msg import PositionTarget  
 from mavros_msgs.msg import AttitudeTarget
+from gazebo_msgs.msg import ModelStates
 from tf.transformations import quaternion_from_euler
 import numpy as np
 from time import sleep
@@ -50,15 +53,19 @@ class data_processing():
         self.orientation_position = msg.pose.pose
         self.angular_velocity = msg.twist.twist.angular.z
 
-    '''
+    # '''
     def orientation_callback(self, msg):
-        self.orientation_value_x = msg.pose[1].orientation.x
-        self.orientation_value_y = msg.pose[1].orientation.y
-        self.orientation_value_z = msg.pose[1].orientation.z
-        self.orientation_value_w = msg.pose[1].orientation.w
-    '''
+        self.error_x = 0 - (msg.pose[1].position.x)
+        self.error_y = 0 - (msg.pose[1].position.y)
+        # self.orientation_value_y = msg.pose[1].orientation.y
+        # self.orientation_value_z = msg.pose[1].orientation.z
+        # self.orientation_value_w = msg.pose[1].orientation.w
+    # '''
 
     def __init__(self):
+        self.error_x = 0
+        self.error_y = 0
+        self.error_z = 0
         self.yawVal = 0.0
         self.count = 1
         self.face_found = False
@@ -71,7 +78,7 @@ class data_processing():
         rospy.Subscriber("/Face_recognition/Searching", String, self.search_callback)
         rospy.Subscriber("/Face_recognition/face_found", String, self.found_callback)
         #rospy.Subscriber("/Face_recognition/face_coordinates", Point, self.coordinates)
-        #self.sub = rospy.Subscriber("/gazebo/model_states",ModelStates, self.orientation_callback)
+        self.sub = rospy.Subscriber("/gazebo/model_states",ModelStates, self.orientation_callback)
         #self.sub = rospy.Subscriber("/camera/odom/sample",Odometry, self.orientation_t265_callback)
         pub = rospy.Publisher('/Face_recognition/coordinates', Pose, queue_size=10)
         pub2 = rospy.Publisher('/Face_recognition/yaw_angle',Float64, queue_size=10)
@@ -80,7 +87,7 @@ class data_processing():
         self.pose = Pose()
         self.d = rospy.Duration(0.3)
         while self.yawVal <= self.two_pi:
-            X, Y, Z = 0, 0, 1.6
+            X, Y, Z = 0.05, 0.05, 1.1
             rVal, pVal = 0, 0  
             if self.face_search:
                 rospy.loginfo("Looking for faces")

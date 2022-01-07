@@ -130,7 +130,7 @@ class data_processing():
         self.pi_three_half = (3*math.pi)/2
         self.two_pi = 2*math.pi
         self.distance = 0.0
-        self.altitude = 1.6
+        self.altitude = 0.68
         self.flag = False
         self.flag2 = False
         self.c1 = 0 
@@ -143,6 +143,14 @@ class data_processing():
         self.third_quad = 3
         self.fourth_quad = 4
         self.pose = Pose()
+        self.pose.orientation.x = 0
+        self.pose.orientation.y = 0
+        self.pose.orientation.z = 0 
+        self.pose.orientation.w = 0
+        self.orientation_value_x = 0 
+        self.orientation_value_y = 0 
+        self.orientation_value_z = 0 
+        self.orientation_value_w = 0 
         self.sub = rospy.Subscriber("/Face_recognition/face_found", String, self.face_foubd_callback)
         self.sub = rospy.Subscriber("/Face_recognition/yaw_angle", Float64, self.angle_callback)
         self.sub = rospy.Subscriber("/Face_recognition/face_coordinates", Point, self.callback)
