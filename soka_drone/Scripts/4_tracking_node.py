@@ -24,17 +24,17 @@ class data_processing():
 
     def angle_callback(self, msg):
         self.yaw_angle = msg.data
-        rospy.loginfo("Yaw angle: %s", self.yaw_angle)
+        rospy.loginfo("Yaw angle is: %s", self.yaw_angle)
         return self.yaw_angle
   
 
     def callback(self, data):
-        self.c1 = data.x
-        self.area = data.y
-        self.c2 = data.z
+        self.c1 = data.x # Center of Bbox X
+        self.area = data.y # area of Bbox
+        self.c2 = data.z # Center of Bbox Y
 
 
-    def face_foubd_callback(self, msg):
+    def face_found_callback(self, msg):
         found = msg.data
         if found == 'face_found':
             self.flag = True
@@ -48,13 +48,13 @@ class data_processing():
         self.orientation_value_z = msg.pose[1].orientation.z
         self.orientation_value_w = msg.pose[1].orientation.w
 
-    '''
+    #'''
     def orientation_t265_callback(self, msg):
         self.orientation_value_x = msg.pose.pose.orientation.x
         self.orientation_value_y = msg.pose.pose.orientation.y
         self.orientation_value_z = msg.pose.pose.orientation.z
         self.orientation_value_w = msg.pose.pose.orientation.w
-    '''
+    #'''
 
     def backward(self, quadrant, angle):
         if quadrant == 1:
@@ -125,8 +125,8 @@ class data_processing():
 
 
     def __init__(self):
-        self.pi_half = math.pi/2
         self.pi = math.pi
+        self.pi_half = math.pi/2
         self.pi_three_half = (3*math.pi)/2
         self.two_pi = 2*math.pi
         self.distance = 0.0
@@ -151,11 +151,11 @@ class data_processing():
         self.orientation_value_y = 0 
         self.orientation_value_z = 0 
         self.orientation_value_w = 0 
-        self.sub = rospy.Subscriber("/Face_recognition/face_found", String, self.face_foubd_callback)
+        self.sub = rospy.Subscriber("/Face_recognition/face_found", String, self.face_found_callback)
         self.sub = rospy.Subscriber("/Face_recognition/yaw_angle", Float64, self.angle_callback)
         self.sub = rospy.Subscriber("/Face_recognition/face_coordinates", Point, self.callback)
-        self.sub = rospy.Subscriber("/gazebo/model_states",ModelStates, self.orientation_callback)
-        #self.sub = rospy.Subscriber("/camera/odom/sample",Odometry, self.orientation_t265_callback)
+        #self.sub = rospy.Subscriber("/gazebo/model_states",ModelStates, self.orientation_callback)
+        self.sub = rospy.Subscriber("/camera/odom/sample",Odometry, self.orientation_t265_callback)
         pub = rospy.Publisher('/Face_recognition/coordinates', Pose, queue_size=10)
         self.d = rospy.Duration(0.3)
         while True:
@@ -180,6 +180,7 @@ class data_processing():
                     rospy.loginfo("Face too far get closer, please %s", self.area)
                     rospy.loginfo("Yaw angle: %s", self.yaw_angle)
                     rospy.loginfo("Distance to move: %s", self.distance)
+                    '''
                     if 0<= self.yaw_angle <= self.pi_half:
                         self.forward(self.first_quad, self.yaw_angle)
                     if self.pi_half< self.yaw_angle <= self.pi:
@@ -191,6 +192,7 @@ class data_processing():
                     self.distance += 0.02
                     pub.publish(self.pose)
                     self.flag = False
+                    '''
                 if 4000<self.area<2200:
                     rospy.loginfo("Safety area of %s and holding position", self.area)
                     if self.flag2:
@@ -202,8 +204,6 @@ class data_processing():
                         pass
                         #hold its position
 
-            #if self.flag:
-            #    print('puto')
             rospy.sleep(self.d)
             
 
