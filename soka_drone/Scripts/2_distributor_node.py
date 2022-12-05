@@ -10,6 +10,7 @@ import ast
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
+from mavros_msgs.msg import LandingTarget
 from time import sleep
 import re
 from tf.transformations import quaternion_from_euler
@@ -43,17 +44,20 @@ class Drone_1():
         pose.orientation.z = data.orientation.z #quat[2]
         pose.orientation.w = data.orientation.w #quat[3]
         pub.publish(pose)
-        rospy.loginfo("Pose_initial: %s, Orientation_initial: %s", pose.position, pose.orientation)
+        rospy.loginfo("Pose_initial : %s, Orientation_initial: %s", pose.position, pose.orientation)
+
+    def kill_callback(self, data):
+        self.kill_program = True
+
+
 
     def __init__(self):
         self.sub = rospy.Subscriber("/Face_recognition/coordinates", Pose, self.callback)
-        self.sub2 = rospy.Subscriber("/Face_recognition/initial_position", Pose, self.callback_2)       
+        self.sub2 = rospy.Subscriber("/Face_recognition/initial_position", Pose, self.callback_2)   
+        #rospy.Subscriber("/Face_recognition/landing/kill_searching", String, self.kill_callback)
+        #self.sub3 = rospy.Subscriber("/Test/manual_coordinates", String, self.callback_3) 
+        self.d = rospy.Duration(0.5) 
         
-        while True:
-            landing = raw_input('landing?')
-            if landing == 'y':
-                msg_String = 'landing'
-                pub2.publish(msg_String)
 
 if __name__ == "__main__":
     print("Distributor node ready")
@@ -63,6 +67,39 @@ if __name__ == "__main__":
     rate = rospy.Rate(10)  # 10hz
     Drone_class = Drone_1()
     rospy.spin()
+
+
+'''
+        while True:
+            landing = raw_input('landing?')
+            if landing == 'y':
+                rospy.loginfo("Landing detected")
+                msg_String = 'landing'
+                pose = Pose()
+                pose.position.x = 0.08
+                pose.position.y = 0.05
+                pose.position.z = 0.24
+                pose.orientation.x = 0
+                pose.orientation.y = 0
+                pose.orientation.z = 0
+                pose.orientation.w = 1
+                pub.publish(pose)
+                rospy.loginfo("first position")
+                rospy.loginfo("Pose: %s, Orientation: %s", pose.position, pose.orientation)
+                sleep(6)
+                pose.position.x = -0.09
+                pose.position.y = -0.05
+                pose.position.z = 0.24
+                pose.orientation.x = 0
+                pose.orientation.y = 0
+                pose.orientation.z = 0
+                pose.orientation.w = 1
+                pub2.publish(msg_String)
+                rospy.loginfo("second position")
+                rospy.loginfo("Pose: %s, Orientation: %s", pose.position, pose.orientation)
+                sleep(8)              
+            rospy.sleep(self.d)
+        '''
 
 
 
