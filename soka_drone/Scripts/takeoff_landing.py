@@ -40,15 +40,15 @@ class drone_1:
 
     def __init__(self):
         rospy.Subscriber("/Face_recognition/model_ready", String, self.takeoff_task)
-        rospy.Subscriber("/camera/odom/sample", Odometry, self.orientation_t265_callback)
+        #rospy.Subscriber("/camera/odom/sample", Odometry, self.orientation_t265_callback)
         #rospy.Subscriber("/zedm/zed_node/odom",Odometry, self.orientation_zed_callback)
-        #rospy.Subscriber("/gazebo/model_states",ModelStates, self.orientation_callback)
+        rospy.Subscriber("/gazebo/model_states",ModelStates, self.orientation_callback)
         pub = rospy.Publisher('/Face_recognition/local_position', Pose, queue_size=10)
         landing_pub = rospy.Publisher('/Face_recognition/landing', String, queue_size=10)
 
         self.takeoff = ''
         self.takeoff_flag = False
-        self.landing_flag = False
+        self.landing_flag = ''
         self.initial_position = 0.14
         self.zVal = 0.70
         self.pose_pos_x = 0
@@ -69,7 +69,7 @@ class drone_1:
                 rospy.loginfo("Takingoff...")
                 self.pose.position.x = 0.0
                 self.pose.position.y = 0.0
-                self.pose.position.z = 0.70
+                self.pose.position.z = 0.75
                 self.pose.orientation.x = 0  # -0.018059104681
                 self.pose.orientation.y = 0  # 0.734654724598
                 self.pose.orientation.z = 0  # 0.00352329877205
@@ -78,43 +78,45 @@ class drone_1:
                 rospy.loginfo("altitude equal to: %f" % self.pose_pos_z)
                 # self.zVal += 0.01
 
-                if self.pose_pos_z >= 0.68:
-                    rospy.loginfo("altitude GAZEBO to: %f" % self.pose_pos_z)
+                if self.pose_pos_z >= 0.7:
+                    self.landing_flag = raw_input('landing?')
+                    pub.publish(self.pose)
                     self.takeoff_flag = False
-                    self.landing_flag = True
-                    sleep(15)
-                
-            
-            if self.takeoff_flag==False and self.landing_flag==True:
-                
-                rospy.loginfo("Landing...")
-                self.pose.position.x = 0.0
-                self.pose.position.y = -0.0
-                self.pose.position.z = 0.30
-                self.pose.orientation.x = 0  # -0.018059104681
-                self.pose.orientation.y = 0  # 0.734654724598
-                self.pose.orientation.z = 0  # 0.00352329877205
-                self.pose.orientation.w = 1  # 0.678191721439
-                #print(self.zVal)
-                pub.publish(self.pose)
-                sleep(.3)
-                rospy.loginfo("altitude equal to: %f" % self.pose.position.z)
-                self.pose.position.x = 0.0
-                self.pose.position.y = -0.0
-                self.pose.position.z = 0.12
-                self.pose.orientation.x = 0  # -0.018059104681
-                self.pose.orientation.y = 0  # 0.734654724598
-                self.pose.orientation.z = 0  # 0.00352329877205
-                self.pose.orientation.w = 1  # 0.678191721439
-                pub.publish(self.pose)
+                #    rospy.loginfo("altitude: %f" % self.pose_pos_z)
+                #    self.takeoff_flag = False
+                #    self.landing_flag = True
 
-                if self.pose_pos_z <= 0.18:
-                    rospy.loginfo("altitude GAZEBO to: %f" % self.pose_pos_z)
-                    self.takeoff_flag = False
-                    self.landing_flag = False
-                    msg = "Landing"
-                    landing_pub.publish(msg)
-                    break
+            
+            if self.landing_flag == 'y':
+                rospy.loginfo("Landing detected")
+                msg_String = 'landing'
+                pose = Pose()
+                rospy.loginfo("first position")
+                pose.position.x = 0.08
+                pose.position.y = 0.05
+                pose.position.z = 0.24
+                pose.orientation.x = 0
+                pose.orientation.y = 0
+                pose.orientation.z = 0
+                pose.orientation.w = 1
+                pub.publish(pose)
+                rospy.loginfo("Pose: %s, Orientation: %s", pose.position, pose.orientation)
+                sleep(6)
+                rospy.loginfo("second position")
+                pose.position.x = -0.09
+                pose.position.y = -0.05
+                pose.position.z = 0.24
+                pose.orientation.x = 0
+                pose.orientation.y = 0
+                pose.orientation.z = 0
+                pose.orientation.w = 1
+                pub.publish(pose)
+                rospy.loginfo("Pose: %s, Orientation: %s", pose.position, pose.orientation)
+                sleep(.5)
+                landing_pub.publish(msg_String)
+                sleep(5)
+                break            
+            rospy.sleep(self.d)        
 
             rate.sleep()
 

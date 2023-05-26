@@ -17,7 +17,7 @@ from time import sleep
 import re
 #import gpio
 from tf.transformations import quaternion_from_euler
-from vision_msgs.msg import Detection2DArray
+#from vision_msgs.msg import Detection2DArray
 import numpy as np
 from time import sleep
 import math
@@ -223,7 +223,7 @@ class data_processing():
         self.orientation_y = 0 #quat[1]
         self.orientation_z = 0 #quat[2]
         self.orientation_w = 1 #quat[3] 
-        self.sub = rospy.Subscriber("/detectnet/detections",Detection2DArray, self.object_detection)
+        #self.sub = rospy.Subscriber("/detectnet/detections",Detection2DArray, self.object_detection)
         self.sub = rospy.Subscriber("/Face_recognition/face_found", String, self.face_found_callback)
         self.sub = rospy.Subscriber("/Face_recognition/yaw_angle", Float64, self.angle_callback)
         self.sub = rospy.Subscriber("/Face_recognition/face_coordinates", Point, self.callback)
