@@ -116,7 +116,12 @@ class drone_1:
                 landing_pub.publish(msg_String)
                 sleep(5)
                 break            
-            rospy.sleep(self.d)        
+            rospy.sleep(self.d)  
+            
+            if self.pose_pos_z < -0.05:
+                rospy.loginfo("Landing detected")
+                msg_String = 'landing'
+                landing_pub.publish(msg_String)
 
             rate.sleep()
 
