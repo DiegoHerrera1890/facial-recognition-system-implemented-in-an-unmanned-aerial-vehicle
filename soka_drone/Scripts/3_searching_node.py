@@ -19,7 +19,7 @@ from geometry_msgs.msg import Point
 from geometry_msgs.msg import TwistStamped
 from mavros_msgs.msg import PositionTarget  
 from mavros_msgs.msg import AttitudeTarget
-#from gazebo_msgs.msg import ModelStates
+from gazebo_msgs.msg import ModelStates
 from tf.transformations import quaternion_from_euler
 import numpy as np
 from time import sleep
@@ -33,23 +33,19 @@ class data_processing():
     def search_callback(self, msg):
         self.face_search = True   
 
+
     def found_callback(self, msg):
-        #print(msg.data)
-        self.face_found = True
+        if msg.data == 'face_found':
+            self.face_found = True
+        else:
+            self.face_found = False
         return self.face_found
 
-    def match_callback(self, msg):
-        self.face_notmatch = True
-        return self.face_notmatch
-
-    def kill_callback(self, msg):
-        self.kill_program = True
-
+    
     def coordinates(self, msg):
         self.c1 = msg.x # Center of the BBox X
         self.A = msg.y  # Center of the BBox Y
         self.c2 = msg.z # Area of BBox
-
 
 
     def tracking_():
@@ -60,14 +56,18 @@ class data_processing():
         self.orientation_position = msg.pose.pose
         self.angular_velocity = msg.twist.twist.angular.z
 
-    # '''
+    
     def orientation_callback(self, msg):
         self.error_x = 0 - (msg.pose[1].position.x)
         self.error_y = 0 - (msg.pose[1].position.y)
         self.orientation_value_y = msg.pose[1].orientation.y
         # self.orientation_value_z = msg.pose[1].orientation.z
         # self.orientation_value_w = msg.pose[1].orientation.w
-    # '''
+    
+
+    def kill_callback(self, msg):
+        self.kill_program = True
+
 
     def __init__(self):
         self.error_x = 0
@@ -77,7 +77,7 @@ class data_processing():
         self.count = 1
         self.face_found = False
         self.face_search = False
-        self.face_notmatch = False
+        #self.face_notmatch = False
         self.kill_program = False
         self.des_yawrate = 0.2
         self.c1 = 0 
@@ -85,15 +85,17 @@ class data_processing():
         self.A = 0
         self.orientation_value_y = 0
         self.sleep_time = 0
-        self.sleep_time_2 = 0
+        #self.sleep_time_2 = 0
         self.rate = rospy.Rate(10)  # 10hz
         rospy.Subscriber("/Face_recognition/Searching", String, self.search_callback)
         rospy.Subscriber("/Face_recognition/face_found", String, self.found_callback)
-        rospy.Subscriber("/Face_recognition/face_notmatch", String, self.match_callback)
         rospy.Subscriber("/Face_recognition/landing/kill_searching", String, self.kill_callback)
-        #self.sub = rospy.Subscriber("/gazebo/model_states",ModelStates, self.orientation_callback)
-        #self.sub = rospy.Subscriber("/camera/odom/sample",Odometry, self.orientation_t265_callback)
-        #rospy.Subscriber("/Face_recognition/face_coordinates", Point, self.coordinates)
+        '''
+        rospy.Subscriber("/Face_recognition/face_notmatch", String, self.match_callback)
+        self.sub = rospy.Subscriber("/gazebo/model_states",ModelStates, self.orientation_callback)
+        self.sub = rospy.Subscriber("/camera/odom/sample",Odometry, self.orientation_t265_callback)
+        rospy.Subscriber("/Face_recognition/face_coordinates", Point, self.coordinates)
+        '''
         pub = rospy.Publisher('/Face_recognition/coordinates', Pose, queue_size=10)
         pub2 = rospy.Publisher('/Face_recognition/yaw_angle',Float64, queue_size=10)
         pub3 = rospy.Publisher('/Face_recognition/yaw_angle_2',Float64, queue_size=10)
@@ -115,30 +117,25 @@ class data_processing():
                 self.pose.orientation.y = quat[1]
                 self.pose.orientation.z = quat[2]
                 self.pose.orientation.w = quat[3]            
+                self.pose.position.x = X
+                self.pose.position.y = Y
+                self.pose.position.z = 1.01
+
                 pub.publish(self.pose)
-		rospy.sleep(.2)
-                self.pose2.position.x = X
-                self.pose2.position.y = Y
-                self.pose2.position.z = Z
-                pub.publish(self.pose2)
-                pub3.publish(self.yawVal)
+                pub2.publish(self.yawVal)
                 self.yawVal += 0.1
                 self.face_search = False
+
             if self.face_found:
                 rospy.loginfo("Face located")
                 rospy.loginfo("Area: %s", self.A)
                 # sleep for a while
-                self.pose2.position.x = X
-                self.pose2.position.y = Y
-                self.pose2.position.z = Z
-                pub.publish(self.pose2)
                 if self.sleep_time < 5:
                     rospy.sleep(.4)
                     self.sleep_time += 1
-                #rospy.loginfo("Pose_data: %s", self.orientation_position)
                 pub2.publish(self.yawVal)
                 self.face_found = False
-
+            ''' 
             if self.face_notmatch:
                 rospy.loginfo("Face not matching")
                 #print('yawVal notmatch: ', self.yawVal)
@@ -163,15 +160,13 @@ class data_processing():
                 self.yawVal += 0.3
                 self.face_notmatch = False
                 sleep(3)
+            '''
 
             if self.yawVal >= 6.199999999999994:
                 rospy.loginfo("One rotation complete")
                 self.yawVal = 0
 
-
-
             rospy.loginfo("Yaw angle: %s", self.yawVal)
-            #rospy.loginfo("Pose_data: %s, Twist_data: %s", self.orientation_position, self.angular_velocity)           
             rospy.sleep(self.d)
 
 
@@ -182,17 +177,3 @@ if __name__ == "__main__":
         drone_data = data_processing()
     except rospy.ROSInterruptException:
         raise
-
-
-
-    '''
-    print("Searching node ready")
-    rospy.init_node('Searching_node', anonymous=True)
-    # pub_vel = rospy.Publisher(mavros.get_topic('setpoint_velocity', 'cmd_vel_unstamped'), Twist, queue_size=10)
-    pub = rospy.Publisher('/Face_recognition/coordinates', Pose, queue_size=10)
-    pub_raw = rospy.Publisher(mavros.get_topic('setpoint_raw', 'local'), PositionTarget, queue_size=10)
-    pub_att = rospy.Publisher(mavros.get_topic('setpoint_attitude', 'cmd_vel'), TwistStamped, queue_size=10)
-    #rate = rospy.Rate(10)  # 10hz
-    drone_data = data_processing()
-    rospy.spin()
-    '''

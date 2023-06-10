@@ -33,7 +33,7 @@ def reading_csv():
 
 if __name__ == '__main__':
     rospy.init_node('Main_node', anonymous=True)
-    pub = rospy.Publisher('Quadcopter_coordinates', String, queue_size=10)
+    pub = rospy.Publisher('/Test/manual_coordinates', String, queue_size=10)
     sleep(1)
     print("Main node ready")
     rate = rospy.Rate(10)

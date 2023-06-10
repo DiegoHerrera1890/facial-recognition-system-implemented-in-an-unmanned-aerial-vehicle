@@ -6,32 +6,27 @@ Subscribe to master RPi and publish to Arduino due.
 '''
 
 import rospy
-import ast
 from std_msgs.msg import String
-from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
-from mavros_msgs.msg import LandingTarget
-from time import sleep
-import re
-from tf.transformations import quaternion_from_euler
 import logging
+from time import sleep
 
-logging.basicConfig(filename='Distributor_node.log', level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(message)s')
-
+logging.basicConfig(filename='Distributor_node.log', level=logging.DEBUG,
+                    format='%(asctime)s:%(levelname)s:%(message)s')
 
 
 class Drone_1():
-    
+
     def callback(self, data):
         pose = Pose()
         pose.position.x = data.position.x
         pose.position.y = data.position.y
         pose.position.z = data.position.z
-        pose.orientation.x = data.orientation.x #quat[0]
-        pose.orientation.y = data.orientation.y #quat[1]
-        pose.orientation.z = data.orientation.z #quat[2]
-        pose.orientation.w = data.orientation.w #quat[3]
-        pub.publish(pose) 
+        pose.orientation.x = data.orientation.x  # quat[0]
+        pose.orientation.y = data.orientation.y  # quat[1]
+        pose.orientation.z = data.orientation.z  # quat[2]
+        pose.orientation.w = data.orientation.w  # quat[3]
+        pub.publish(pose)
         rospy.loginfo("Pose_data: %s, Orientation_data: %s", pose.position, pose.orientation)
 
     def callback_2(self, data):
@@ -39,38 +34,24 @@ class Drone_1():
         pose.position.x = data.position.x
         pose.position.y = data.position.y
         pose.position.z = data.position.z
-        pose.orientation.x = data.orientation.x #quat[0]
-        pose.orientation.y = data.orientation.y #quat[1]
-        pose.orientation.z = data.orientation.z #quat[2]
-        pose.orientation.w = data.orientation.w #quat[3]
+        pose.orientation.x = data.orientation.x  # quat[0]
+        pose.orientation.y = data.orientation.y  # quat[1]
+        pose.orientation.z = data.orientation.z  # quat[2]
+        pose.orientation.w = data.orientation.w  # quat[3]
         pub.publish(pose)
         rospy.loginfo("Pose_initial : %s, Orientation_initial: %s", pose.position, pose.orientation)
 
     def kill_callback(self, data):
         self.kill_program = True
 
-
-
     def __init__(self):
         self.sub = rospy.Subscriber("/Face_recognition/coordinates", Pose, self.callback)
-        self.sub2 = rospy.Subscriber("/Face_recognition/initial_position", Pose, self.callback_2)   
-        #rospy.Subscriber("/Face_recognition/landing/kill_searching", String, self.kill_callback)
-        #self.sub3 = rospy.Subscriber("/Test/manual_coordinates", String, self.callback_3) 
-        self.d = rospy.Duration(0.5) 
-        
+        self.sub2 = rospy.Subscriber("/Face_recognition/initial_position", Pose, self.callback_2)
+        # rospy.Subscriber("/Face_recognition/landing/kill_searching", String, self.kill_callback)
+        # self.sub3 = rospy.Subscriber("/Test/manual_coordinates", String, self.callback_3)
+        self.d = rospy.Duration(0.5)
 
-if __name__ == "__main__":
-    print("Distributor node ready")
-    rospy.init_node('Distributor_node', anonymous=True)
-    pub = rospy.Publisher('/Face_recognition/local_position', Pose, queue_size=10)
-    pub2 = rospy.Publisher('/Face_recognition/landing', String, queue_size=10)
-    rate = rospy.Rate(10)  # 10hz
-    Drone_class = Drone_1()
-    rospy.spin()
-
-
-'''
-        while True:
+        while not rospy.is_shutdown():
             landing = raw_input('landing?')
             if landing == 'y':
                 rospy.loginfo("Landing detected")
@@ -99,15 +80,13 @@ if __name__ == "__main__":
                 rospy.loginfo("Pose: %s, Orientation: %s", pose.position, pose.orientation)
                 sleep(8)              
             rospy.sleep(self.d)
-        '''
 
 
-
-
-
-
-
-
-
-
-
+if __name__ == "__main__":
+    print("Distributor node ready")
+    rospy.init_node('Distributor_node', anonymous=True)
+    pub = rospy.Publisher('/Face_recognition/local_position', Pose, queue_size=10)
+    pub2 = rospy.Publisher('/Face_recognition/landing', String, queue_size=10)
+    rate = rospy.Rate(10)  # 10hz
+    Drone_class = Drone_1()
+    rospy.spin()
