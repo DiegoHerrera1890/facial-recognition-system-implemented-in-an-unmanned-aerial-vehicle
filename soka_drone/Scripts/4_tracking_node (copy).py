@@ -26,8 +26,6 @@ class data_processing():
 
     def angle_callback(self, msg):
         self.yaw_angle = msg.data
-        
-        
 
     def object_detection(self, data):
         self.bbox = data.detections[0].bbox
@@ -42,8 +40,8 @@ class data_processing():
     def coordinate_callback(self, data):
         self.c1 = data.x # Center of Bbox X
         self.area = data.y # area of Bbox
-        #self.c2 = data.z # Center of Bbox Y
-        #rospy.loginfo("C1 is %f", self.c1)
+        self.c2 = data.z # Center of Bbox Y
+        rospy.loginfo("C1 is %f", self.c1)
 
 
     def face_found_callback(self, msg):
@@ -82,8 +80,6 @@ class data_processing():
         self.orientation_value_w = msg.pose.pose.orientation.w
     
     def right(self, angle_n):
-        rospy.loginfo("Go rigth")
-        rospy.loginfo("Yaw angle is %f", angle_n)
         rVal, pVal = 0, 0
         quat = quaternion_from_euler(rVal, pVal, angle_n)
         self.pose.position.x = self.pose.position.x
@@ -93,10 +89,8 @@ class data_processing():
         self.pose.orientation.y = quat[1]
         self.pose.orientation.z = quat[2]
         self.pose.orientation.w = quat[3] 
-        #self.pub.publish(self.pose)
 
     def left(self, angle_n):
-        rospy.loginfo("go left")
         rVal, pVal = 0, 0
         quat = quaternion_from_euler(rVal, pVal, angle_n)
         self.pose.position.x = self.pose.position.x
@@ -106,7 +100,6 @@ class data_processing():
         self.pose.orientation.y = quat[1]
         self.pose.orientation.z = quat[2]
         self.pose.orientation.w = quat[3]
-        
 
     def hold_position(self, angle_n):
         rVal, pVal = 0, 0
@@ -117,7 +110,7 @@ class data_processing():
         self.pose.orientation.x = quat[0]
         self.pose.orientation.y = quat[1]
         self.pose.orientation.z = quat[2]
-        self.pose.orientation.w = quat[3]
+        self.pose.orientation.w = quat[3] 
 
 
     def new_quaternion(self, data):        
@@ -194,7 +187,8 @@ class data_processing():
         rospy.loginfo("orientation W is: %s", self.pose.orientation.w) 
 
 
-   
+    #def odometry_callback(self, msg):
+    #    self.odom_data = msg.pose.pose.orientation
 
 
 
@@ -210,13 +204,16 @@ class data_processing():
         self.flag3 = False
         self.kill_program = False
         self.c1 = 0 
-        #self.c2 = 0 
+        self.c2 = 0 
         self.area = 0
         self.yaw_angle = 0
+        self.odom_data = 0
         self.first_quad = 1
         self.second_quad = 2
         self.third_quad = 3
         self.fourth_quad = 4
+        self.yaw_angle_rigth = 0.0
+        self.yaw_angle_left = 0.0
         self.pose = Pose()
         self.pose.position.x = 0
         self.pose.position.y = 0
@@ -225,35 +222,39 @@ class data_processing():
         self.pose.orientation.y = 0
         self.pose.orientation.z = 0 
         self.pose.orientation.w = 1
-        self.bbox_x = 0   
-        self.count = 0 
+        self.bbox_x = 0      
+        self.secondata = 0
         self.orientation_x = 0 #quat[0]
         self.orientation_y = 0 #quat[1]
         self.orientation_z = 0 #quat[2]
         self.orientation_w = 1 #quat[3] 
+        #self.sub = rospy.Subscriber("/detectnet/detections",Detection2DArray, self.object_detection)
         self.sub = rospy.Subscriber("/Face_recognition/face_found", String, self.face_found_callback)
-        self.sub = rospy.Subscriber("/Face_recognition/face_coordinates", Point, self.coordinate_callback)
+        self.sub = rospy.Subscriber("/Face_recognition/face_matching", String, self.face_match_callback)
         self.sub = rospy.Subscriber("/Face_recognition/yaw_angle", Float64, self.angle_callback)
+        self.sub = rospy.Subscriber("/Face_recognition/face_coordinates", Point, self.callback)
         self.sub = rospy.Subscriber("/Face_recognition/coordinates", Pose, self.new_quaternion)
         self.sub = rospy.Subscriber("/Face_recognition/landing/kill_searching", String, self.kill_callback)
+        #self.sub = rospy.Subscriber("/gazebo/model_states",ModelStates, self.orientation_callback)
+        #self.sub = rospy.Subscriber("/camera/odom/sample",Odometry, self.orientation_t265_callback)
         self.pub = rospy.Publisher('/Face_recognition/coordinates', Pose, queue_size=10)
         self.pub_yaw = rospy.Publisher('/Face_recognition/yaw_angle_fb', Float64, queue_size=10)
-
         self.d = rospy.Duration(0.1)
+        self.sleep_time = 0
+        self.rate = rospy.Rate(10)  # 10hz
         while not rospy.is_shutdown():
-            #rospy.loginfo("Yaw angle is: %s", self.yaw_angle)
+            rospy.loginfo("Yaw angle is: %s", self.yaw_angle)
             if self.kill_program:
                 self.kill_program = False
                 break
             if self.flag: # and self.sleep_time >= 5
-                #rospy.loginfo("Face was found")
+                rospy.loginfo("Face was found")
                 rospy.sleep(.4)
                 #print('area: ', self.area)
-                if self.area >= 78501:
+                if self.area >= 18900:
                     rospy.loginfo("Face too close get away, please %s", self.area)
                     rospy.loginfo("Yaw angle: %s", self.yaw_angle)
                     rospy.loginfo("Distance to move: %s", self.distance)
-                    """
                     if 0<= self.yaw_angle <= self.pi_half:
                         self.backward(self.first_quad, self.yaw_angle)
                     if self.pi_half< self.yaw_angle <= self.pi:
@@ -264,13 +265,12 @@ class data_processing():
                         self.backward(self.fourth_quad, self.yaw_angle)
                     self.distance += 0.02
                     self.pub.publish(self.pose)
-                    """
                     self.flag = False
-                if self.area <= 5700:
+                if self.area <= 5000:
                     rospy.loginfo("Face too far get closer, please %s", self.area)
                     rospy.loginfo("Yaw angle: %s", self.yaw_angle)
                     rospy.loginfo("Distance to move: %s", self.distance)
-                    """
+                    
                     if 0<= self.yaw_angle <= self.pi_half:
                         self.forward(self.first_quad, self.yaw_angle)
                     if self.pi_half< self.yaw_angle <= self.pi:
@@ -281,36 +281,38 @@ class data_processing():
                         self.forward(self.fourth_quad, self.yaw_angle)
                     self.distance += 0.02
                     self.pub.publish(self.pose)
-                    """
                     self.flag = False
                     
-                if 5701<self.area<78500:
+                if 5001<self.area<18900:
                     rospy.loginfo("Safety area of %s and holding position", self.area)
 
-                    if self.flag: #and self.flag3:    # self.flag2
-                        #rospy.loginfo("C1 is: %f, and yaw angle is: %f" %(self.c1, self.yaw_angle))
+                    if self.flag2: #and self.flag3:    # self.flag2
+                        rospy.loginfo("C1 is: %f, and yaw angle is: %f" %(self.c1, self.yaw_angle))
                         if self.c1 <= 180:
-                            self.yaw_angle += 0.1
+                            rospy.loginfo("go right")
                             self.right(self.yaw_angle)
-                            #rospy.loginfo("Yaw angle: %s", self.yaw_angle)
+                            self.yaw_angle += 0.1
                             self.pub.publish(self.pose)
                             self.pub_yaw.publish(self.yaw_angle)
+                            
                         if self.c1 >= 460:
-                            self.yaw_angle -= 0.1
+                            rospy.loginfo("go left")
                             self.left(self.yaw_angle)
-                            #rospy.loginfo("Yaw angle: %s", self.yaw_angle)
+                            self.yaw_angle -= 0.1
                             self.pub.publish(self.pose)
                             self.pub_yaw.publish(self.yaw_angle)
+                            
                         if 300<self.c1<900:
                             rospy.loginfo(" Face in the center with yaw angle: %s", self.yaw_angle)
                         rospy.loginfo(" yaw_angle: %f", self.yaw_angle)
                         self.flag = False
-                    
 
                     else:
                         pass
                         #hold its position
-            #rospy.sleep(self.d)
+
+            #self.sleep_time += 1
+            rospy.sleep(self.d)
             
 
 

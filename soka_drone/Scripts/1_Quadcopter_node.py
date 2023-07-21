@@ -78,7 +78,8 @@ class drone_control:
                     last_request = now
 
             if self.current_state.armed:
-                print("Drone ready to fly")
+                pass
+                #print("Drone ready to fly")
             if self.prev_state.armed != self.current_state.armed:
                 rospy.loginfo("Vehicle armed: %r" % self.current_state.armed)
             if self.prev_state.mode != self.current_state.mode:
@@ -89,7 +90,7 @@ class drone_control:
             # rospy.Subscriber("/Face_recognition/drone_search", Pose, coordinates_orientation)
             self.pose.header.stamp = rospy.Time.now()
             self.local_position_publisher.publish(self.pose)
-            rospy.Subscriber("/Face_recognition/landing", String, self.land_callback)
+            rospy.Subscriber("/Face_recognition/landing/land", String, self.land_callback)
             if self.flag:
                 print("hello landing")
                 self.set_mode_client(base_mode=0, custom_mode="AUTO.LAND")

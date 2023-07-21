@@ -24,7 +24,7 @@ diego@subarashi:~$ rosrun soka_drone 1_Quadcopter_node.py           *First      
 diego@subarashi:~$ rosrun soka_drone takeoff_landing.py                               (Terminal 5)
 
 rostopic pub /Face_recognition/model_ready std_msgs/String ready                      (Terminal 6)
-
+rostopic pub /Face_recognition/landing/kill_searching std_msgs/String landing 
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*_*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-**-*-*-*-*-**-*
 
 
@@ -32,20 +32,20 @@ rostopic pub /Face_recognition/model_ready std_msgs/String ready                
 
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* Real World realsense T265 *-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-**-*-*-*-*-**-*-*-
 # sudo date MMDDHHMMYYYY.SS
-# diego@subarashi:~$ sudo chmod 666 /dev/ttyTHS2  (Terminal 1)
-# diego@subarashi:~$ roslaunch ros_deep_learning detectnet.ros1.launch input:=v4l2:///dev/video1 output:=display://0
+xonapa@drone:~$ sudo chmod 666 /dev/ttyTHS2  (Terminal 1)
+xonapa@drone:~$ roslaunch mavros px4.launch fcu_url:="/dev/ttyTHS2:3000000" gcs_url:="udp://:14401@127.0.0.1:14550" (Terminal 1)
+xonapa@drone:~$ roslaunch px4_realsense_bridge bridge.launch  (Terminal 2)
+xonapa@drone:~$ rostopic echo /camera/odom/sample
+xonapa@drone:~$ rostopic echo /mavros/local_position/pose
+xonapa@drone:~$ rosrun image_view video_recorder image:=/camera/fisheye1/image_raw _image_transport:="compressed" _filename:="/media/jetson/B2E4-69EA3/videos/4/fisheye_1.avi" _fps:="15" _codec:="I420"
+xonapa@drone:~$ rosrun image_view video_recorder image:=/camera/fisheye2/image_raw _image_transport:="compressed" _filename:="/media/jetson/B2E4-69EA3/videos/4/fisheye_2.avi" _fps:="15" _codec:="I420"
 
-diego@subarashi:~$ roslaunch mavros px4.launch fcu_url:="/dev/ttyTHS2:921600" gcs_url:="udp://:14401@127.0.0.1:14550" (Terminal 1)
-diego@subarashi:~$ roslaunch px4_realsense_bridge bridge.launch  (Terminal 2)
-diego@subarashi:~$ rostopic echo /camera/odom/sample
-diego@subarashi:~$ rostopic echo /mavros/local_position/pose
-diego@subarashi:~$ rosrun image_view video_recorder image:=/camera/fisheye1/image_raw _image_transport:="compressed" _filename:="/media/jetson/B2E4-69EA3/videos/4/fisheye_1.avi" _fps:="15" _codec:="I420"
-diego@subarashi:~$ rosrun image_view video_recorder image:=/camera/fisheye2/image_raw _image_transport:="compressed" _filename:="/media/jetson/B2E4-69EA3/videos/4/fisheye_2.avi" _fps:="15" _codec:="I420"
 
-rostopic pub /Face_recognition/model_ready std_msgs/String ready
+xonapa@drone:~$ rostopic pub /Face_recognition/model_ready std_msgs/String ready  (Terminal 2)
 rostopic pub /Face_recognition/Searching std_msgs/String Searching
 
-
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+# diego@subarashi:~$ roslaunch ros_deep_learning detectnet.ros1.launch input:=v4l2:///dev/video1 output:=display://0
 sudo chmod 666 /sys/class/gpio/gpio388/value
 sudo chmod 666 /sys/class/gpio/gpio298/value
 sudo chmod 666 /sys/class/gpio/gpio480/value
