@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Include the MAVROS node with SITL and Gazebo -->
+  <include file="$(find mavros)/launch/px4.launch" >
+    <arg name="fcu_url" value="/dev/ttyTHS2:3000000"/>
+  </include >
+  <!-- Launch the px4_realsense_bridge -->
+  <include file="$(find px4_realsense_bridge)/launch/bridge.launch" />
+
+  <!-- Our node to control the drone -->
+  <node pkg="soka_drone" type="1_Quadcopter_node.py" name="Quadcopter_node" required="true" output="screen" />
+  <node pkg="soka_drone" type="takeoff_landing.py" name="takingoff_node" required="true" output="screen" />
+   
+</launch>
+
