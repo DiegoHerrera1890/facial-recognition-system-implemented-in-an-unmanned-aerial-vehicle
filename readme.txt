@@ -160,3 +160,17 @@ twist:
 
 
 rostopic pub /Face_recognition/Searching std_msgs/String "Searching"
+
+
+
+
+export PATH=/usr/local/cuda-10.2/bin:$PATH
+export PATH=/home/xonapa/Documents/pycharm-community-2022.3.2/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/
+source /opt/ros/melodic/setup.bash
+source /home/xonapa/drone_ws/devel/setup.bash
+
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)
+export ROS_MASTER_URI=http://10.0.3.19:11311
+export ROS_HOSTNAME=10.0.3.19
