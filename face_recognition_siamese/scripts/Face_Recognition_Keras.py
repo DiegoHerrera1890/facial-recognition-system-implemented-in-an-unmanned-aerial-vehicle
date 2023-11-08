@@ -31,7 +31,6 @@ from face_rec_model import who_is_it
 from face_rec_model import who_is_it_image
 from face_rec_model import verify
 from face_rec_model import img_to_encoding
-from face_rec_model import img_to_encoding_1
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Point
@@ -67,7 +66,7 @@ np.set_printoptions(threshold=sys.maxsize)
 rospy.loginfo(keras.__version__)
 
 FRmodel = faceRecoModel(input_shape=(3, 96, 96))
-
+FRmodel.summary()
 #rospy.loginfo("Total Params:", FRmodel.count_params())
 
 
@@ -212,102 +211,102 @@ database["diego"] = (img_to_encoding(BASE_DIR + "/images/diego/diego_1.jpg", FRm
     img_to_encoding(BASE_DIR + "/images/diego/diego_94.jpg", FRmodel),
     img_to_encoding(BASE_DIR + "/images/diego/diego_95.jpg", FRmodel))
 
-# Monieer
-database["Monieer"] = (img_to_encoding(BASE_DIR + "/images/monieer/monieer_1.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_2.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_3.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_4.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_5.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_6.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_7.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_8.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_9.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_10.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_11.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_12.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_13.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_14.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_15.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_16.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_17.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_18.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_19.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_20.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_21.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_22.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_23.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_24.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_25.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_26.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_27.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_28.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_29.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_30.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_31.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_32.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_33.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_34.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_35.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_36.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_37.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_38.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_39.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_40.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_41.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_42.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_43.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_44.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_45.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_46.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_47.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_48.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_49.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_50.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_51.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_52.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_53.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_54.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_55.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_56.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_57.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_58.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_59.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_60.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_61.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_62.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_63.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_64.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_65.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_66.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_67.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_68.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_69.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_70.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_71.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_72.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_73.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_74.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_75.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_76.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_77.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_78.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_79.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_80.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_81.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_82.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_83.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_84.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_85.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_86.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_87.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_88.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_89.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_90.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_91.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_92.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_93.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_94.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/monieer/monieer_95.jpg", FRmodel))
+# juan
+database["juan"] = (img_to_encoding(BASE_DIR + "/images/juan/juan_1.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_2.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_3.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_4.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_5.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_6.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_7.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_8.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_9.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_10.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_11.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_12.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_13.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_14.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_15.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_16.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_17.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_18.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_19.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_20.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_21.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_22.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_23.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_24.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_25.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_26.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_27.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_28.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_29.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_30.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_31.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_32.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_33.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_34.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_35.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_36.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_37.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_38.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_39.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_40.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_41.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_42.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_43.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_44.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_45.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_46.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_47.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_48.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_49.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_50.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_51.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_52.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_53.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_54.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_55.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_56.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_57.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_58.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_59.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_60.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_61.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_62.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_63.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_64.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_65.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_66.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_67.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_68.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_69.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_70.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_71.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_72.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_73.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_74.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_75.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_76.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_77.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_78.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_79.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_80.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_81.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_82.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_83.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_84.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_85.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_86.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_87.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_88.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_89.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_90.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_91.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_92.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_93.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_94.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/juan/juan_95.jpg", FRmodel))
 
 # Nomura
 database["Nomura"] = (img_to_encoding(BASE_DIR + "/images/nomura/nomura_1.jpg", FRmodel),
@@ -406,102 +405,102 @@ database["Nomura"] = (img_to_encoding(BASE_DIR + "/images/nomura/nomura_1.jpg", 
     img_to_encoding(BASE_DIR + "/images/nomura/nomura_94.jpg", FRmodel),
     img_to_encoding(BASE_DIR + "/images/nomura/nomura_95.jpg", FRmodel))
 
-# Karen
-database["Karen"] = (img_to_encoding(BASE_DIR + "/images/karen/karen_1.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_2.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_3.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_4.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_5.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_6.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_7.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_8.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_9.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_10.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_11.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_12.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_13.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_14.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_15.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_16.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_17.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_18.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_19.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_20.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_21.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_22.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_23.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_24.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_25.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_26.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_27.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_28.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_29.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_30.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_31.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_32.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_33.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_34.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_35.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_36.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_37.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_38.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_39.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_40.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_41.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_42.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_43.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_44.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_45.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_46.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_47.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_48.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_49.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_50.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_51.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_52.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_53.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_54.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_55.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_56.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_57.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_58.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_59.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_60.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_61.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_62.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_63.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_64.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_65.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_66.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_67.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_68.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_69.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_70.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_71.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_72.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_73.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_74.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_75.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_76.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_77.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_78.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_79.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_80.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_81.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_82.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_83.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_84.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_85.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_86.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_87.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_88.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_89.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_90.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_91.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_92.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_93.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_94.jpg", FRmodel),
-    img_to_encoding(BASE_DIR + "/images/karen/karen_95.jpg", FRmodel))
+# maeda
+database["maeda"] = (img_to_encoding(BASE_DIR + "/images/maeda/maeda_1.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_2.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_3.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_4.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_5.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_6.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_7.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_8.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_9.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_10.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_11.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_12.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_13.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_14.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_15.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_16.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_17.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_18.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_19.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_20.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_21.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_22.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_23.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_24.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_25.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_26.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_27.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_28.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_29.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_30.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_31.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_32.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_33.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_34.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_35.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_36.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_37.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_38.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_39.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_40.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_41.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_42.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_43.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_44.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_45.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_46.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_47.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_48.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_49.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_50.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_51.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_52.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_53.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_54.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_55.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_56.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_57.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_58.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_59.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_60.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_61.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_62.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_63.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_64.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_65.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_66.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_67.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_68.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_69.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_70.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_71.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_72.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_73.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_74.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_75.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_76.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_77.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_78.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_79.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_80.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_81.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_82.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_83.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_84.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_85.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_86.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_87.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_88.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_89.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_90.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_91.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_92.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_93.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_94.jpg", FRmodel),
+    img_to_encoding(BASE_DIR + "/images/maeda/maeda_95.jpg", FRmodel))
 
 # Hibiki
 database["Hibiki"] = (img_to_encoding(BASE_DIR + "/images/hibiki/hibiki_1.jpg", FRmodel), 
@@ -603,7 +602,6 @@ database["Hibiki"] = (img_to_encoding(BASE_DIR + "/images/hibiki/hibiki_1.jpg", 
 current_time = time.time()
 elapsed_time = current_time - past_time
 rospy.loginfo("Done with %f seconds.", elapsed_time)
-rospy.loginfo("Done...")
 sleep(3)
 message_model = 'done'
 pub_model_ready.publish(message_model)
@@ -616,14 +614,14 @@ frame_height = int(cap.get(4))
 fourcc = cv2.VideoWriter_fourcc(*'MJPG')
 img_count = 0
 #path = r'/home/jetson/catkin_ws/src/face_recognition_keras/scripts/images/diego/diego_1.jpg'
-video_out = cv2.VideoWriter('/media/xonapa/3A3A-CE50/videos/1/face_detection.avi', fourcc, 8, (frame_width,frame_height))
+video_out = cv2.VideoWriter('/media/xonapa/3A3A-CE50/videos/2/face_detection_2.avi', fourcc, 8, (frame_width,frame_height))
 rate = rospy.Rate(10)
 flag_nf = False
 flag_ff = False
 id_unknown = 0
 id_known = 0
-total_sum = 0
-j = 0
+#total_sum = 0
+#j = 0
 avg_val = 1000
 A_dict = {'': 0}
 B_dict = {'': 0}
@@ -638,8 +636,10 @@ while not rospy.is_shutdown():
         detections = []
         detections2 = ()
         olap = []
-
+        import time
+        
         if len(faceRects) > 0:
+            past_time2 = time.time()
             rospy.loginfo("Face found...")
             face_message = "face_found"
             pub_face_found.publish(face_message)
@@ -651,20 +651,22 @@ while not rospy.is_shutdown():
                 coordinates = Point(x=c1, y=A, z=c2)
                 roi = frame[y-2:y + h+2, x-2:x + w+2]
                 roi = cv2.resize(roi, (96, 96))
-                #roi2 = cv2.imread(path)
                 min_dist, identity = who_is_it(roi, database, FRmodel)
 
-                #average_value.write_image(img_count, roi)
+                # rospy.loginfo("First min distance is: %f", min_dist)
                 average_value.write_image_value(img_count, min_dist, identity)
-                avg_val, flag, total_avg, identityy = average_value.calculate_average_distance(j, min_dist, total_sum, identity, avg_val, flag=False)
-                total_sum = total_avg
-                avg_val = round(avg_val, 2)
+                avg_val, flag, identityy = average_value.calculate_average_distance(min_dist, identity, avg_val, flag=False)
+                #total_sum = total_avg
+                # avg_val = round(avg_val, 2)
+                avg_val = round(min_dist, 2)
 
                 img_count += 1
+                '''
                 j += 1
                 if j == 2:
                     j = 0
                     total_sum = 0
+                '''
 
                 if img_count == 80:
                     img_count = 0
@@ -690,21 +692,27 @@ while not rospy.is_shutdown():
                     X1, Y1, X2, Y2 = int(x1), int(y1), int(x2), int(y2)
                     average_value.new_algorithm(coordinates, X1, Y1, X2, Y2, flag, avg_val, id_N, A_dict, B_dict, identityy, name, frame, id_known, id_unknown, flag_nf, flag_ff)
 
+            current_time2 = time.time()
+            elapsed_time2 = current_time2 - past_time2
+            rospy.loginfo("Time: %f seconds.", elapsed_time)
+
         else:
             rospy.loginfo("Face not found...")
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame, 'No faces detected', (0, 20), font, 1.0, (255, 0, 0), 1)
             search_msg = "Searching"
             pub_Searching.publish(search_msg)
+        
 
         new_h = frame_height // 2
         new_w = frame_width // 2
-        resize = cv2.resize(gray, (new_w, new_h))
+        ngray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        resize = cv2.resize(ngray, (new_w, new_h))
         image_message = bridge.cv2_to_imgmsg(resize)
         pub_image_raw.publish(image_message)
         if ret:
             video_out.write(frame)
-        cv2.imshow('frame', frame)
+        #cv2.imshow('frame', frame)
 
         rate.sleep()
 
@@ -712,6 +720,5 @@ while not rospy.is_shutdown():
         break
 
 video_out.release()
-cap.release()
-cv2.destroyAllWindows()
-
+#cap.release()
+#cv2.destroyAllWindows()

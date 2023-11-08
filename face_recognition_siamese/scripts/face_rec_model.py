@@ -6,9 +6,10 @@ from imutils import paths
 import imutils
 import pickle
 import time
-
+import rospy
 
 def img_to_encoding_1(image, model):
+    print("done encoding")
     img1 = image
     img = img1[...,::-1]
     img = np.around(np.transpose(img, (2,0,1))/255.0, decimals=12)
@@ -85,10 +86,10 @@ def who_is_it(image_path, database, model):
     
     # Loop over the database dictionary's names and encodings.
     for (name, db_enc) in database.items():
-        for j in range(35):
+        for j in range(94):
             # Compute L2 distance between the target "encoding" and the current "emb" from the database. (≈ 1 line)
             dist = np.linalg.norm(encoding - db_enc[j])
-            # print("distance: ", dist)
+            #rospy.loginfo("distance is: %f", dist)
             # print("count", j)
             # print(name)
             # If this distance is less than the min_dist, then set min_dist to dist, and identity to name. (≈ 3 lines)

@@ -27,10 +27,10 @@ while True:
             c2 = y + (h // 2)
             A = h * w
             roi = img[y-2:y + h+2, x-2:x + w+2]
-            roi = cv2.resize(roi, (96, 96))
+            roi = cv2.resize(roi, (224, 224))
             
             # Save the ROI as a JPG file
-            filename = os.path.join(save_path, f"face_{count:04d}.jpg")
+            filename = os.path.join(save_path, f"diego_{count:1d}.jpg")
             cv2.imwrite(filename, roi)
             count += 1
         cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
