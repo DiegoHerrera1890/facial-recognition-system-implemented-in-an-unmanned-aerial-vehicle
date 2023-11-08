@@ -25,6 +25,8 @@ with open('/media/jetson/B2E4-69EA2/Face_recognition_data_analysis/min_distance_
 
 def noidea(boxes_ids,olap,X1,Y1,X2,Y2,font,img):
 	if len(boxes_ids) >1 and len(olap)==len(boxes_ids):
+		print("len olap", len(olap))
+		print("if bucle", olap[len(olap)-1])
 		id_New=olap[len(olap)-1]
 		print("coordinates of Id 2: ", X1,Y1,X2,Y2)
 		cv2.putText(img, str(id_New), (X1,Y1 - 15), font, 1, (255, 0, 0), 1)

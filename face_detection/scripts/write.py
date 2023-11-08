@@ -1,27 +1,35 @@
 #!/usr/bin/env python
-import numpy as np
-import rospy
 import cv2
 
-
-
+# Open the camera
 cap = cv2.VideoCapture(-1) 
-frame_width = int(cap.get(3))
-frame_height = int(cap.get(4))
-video_out = cv2.VideoWriter('video.avi', cv2.VideoWriter_fourcc(*'MJPG'), 40, (frame_width,frame_height)) 
-    
-while True: #not rospy.is_shutd1.6wn():
-    ret, img = cap.read()
-    #print(img.shape)
+
+# Define the number of photos to capture
+num_photos = 10
+photo_count = 0
+
+# Loop to capture photos
+while photo_count < num_photos:
+    # Read a frame from the camera
+    ret, frame = cap.read()
     
     if ret:
-        video_out.write(img)
-
-    cv2.imshow('frame', img)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+        # Display the frame
+        cv2.imshow('Camera', frame)
+        
+        # Wait for 'Space' key press to capture the photo
+        if cv2.waitKey(1) == ord(' '):
+            # Save the photo
+            photo_filename = 'photo_{}.jpg'.format(photo_count)
+            cv2.imwrite(photo_filename, frame)
+            print('Photo {} captured!'.format(photo_count + 1))
+            photo_count += 1
+    
+    # Break the loop if 'Esc' key is pressed
+    if cv2.waitKey(1) == 27:
         break
- 
+
+# Release the camera and close the OpenCV windows
 cap.release()
-video_out.release()
 cv2.destroyAllWindows()
 
