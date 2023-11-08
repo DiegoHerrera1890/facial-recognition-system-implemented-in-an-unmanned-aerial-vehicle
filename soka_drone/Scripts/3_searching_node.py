@@ -187,7 +187,7 @@ class data_processing():
                 rospy.loginfo("Area: %s", self.A)
                 # sleep for a while
                 if self.sleep_time < 5:
-                    rospy.sleep(.4)
+                    rospy.sleep(.7)
                     self.sleep_time += 1
                 if self.sleep_time2 < 2:
                     pub2.publish(self.yawVal)

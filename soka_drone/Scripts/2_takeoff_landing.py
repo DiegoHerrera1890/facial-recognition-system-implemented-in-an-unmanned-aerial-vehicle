@@ -92,7 +92,7 @@ class drone_1:
                 rospy.loginfo("Takingoff...")
                 self.pose.position.x = 0.0
                 self.pose.position.y = 0.0
-                self.pose.position.z = 0.95
+                self.pose.position.z = 1.15
                 self.pose.orientation.x = 0  # -0.018059104681
                 self.pose.orientation.y = 0  # 0.734654724598
                 self.pose.orientation.z = 0  # 0.00352329877205

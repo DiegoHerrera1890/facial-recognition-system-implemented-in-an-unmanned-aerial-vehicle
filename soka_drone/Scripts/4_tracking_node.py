@@ -220,7 +220,7 @@ class data_processing():
         self.pose = Pose()
         self.pose.position.x = 0
         self.pose.position.y = 0
-        self.pose.position.z = 1.0
+        self.pose.position.z = 1.15
         self.pose.orientation.x = 0
         self.pose.orientation.y = 0
         self.pose.orientation.z = 0 
