@@ -13,7 +13,6 @@ import sys
 from time import sleep
 from sort import *
 import testodesu
-print("done")
 
 # bridge = CvBridge()
 tracker = Sort() 
